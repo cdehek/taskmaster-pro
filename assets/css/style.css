@@ -1,3 +1,9 @@
 ul.list-group {
   min-height: 130px;
 }
+
+.ui-datepicker {
+  background: white;
+  border: solid black;
+  border-radius: 15px;
+}
