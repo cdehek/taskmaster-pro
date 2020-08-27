@@ -5,11 +5,11 @@
   * Events highlighted red indicated that they are currently past due.
   
 ### Made Using:
-  *CSS
-  *Html
-  *JS
-  *jQuery
-  *Boostrap
+  * CSS
+  * Html
+  * JS
+  * jQuery
+  * Boostrap
 
   
  Made with ❤️ by Christian Dehek
