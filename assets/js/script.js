@@ -167,10 +167,12 @@ $(".card .list-group").sortable({
   helper: "clone",
   activate: function(event) {
     $(this).addClass("dropover")
+    $(".bottom-trash").addClass("bottom-trash-drag")
     console.log("activate", this);
   },
   deactivate: function(event) {
     $(this).removeClass("dropover")
+    $(".bottom-trash").removeClass("bottom-trash-drag")
     console.log("deactivate", this)
   },
   over: function(event) {
@@ -221,12 +223,16 @@ $("#trash").droppable({
   accept: ".card .list-group-item",
   tolerance: "touch",
   drop: function(event, ui) {
+    $(".bottom-trash").removeClass("bottom-trash-drag")
+    console.log("drop");
     ui.draggable.remove();
   },
   over: function(event, ui) {
+    $(".bottom-trash").addClass("bottom-trash-drag")
     console.log("over");
   },
   out: function(event, ui) {
+    $(".bottom-trash").removeClass("bottom-trash-drag")
     console.log("out");
   }
 });
@@ -244,7 +250,7 @@ $("#task-form-modal").on("shown.bs.modal", function() {
 });
 
 // save button in modal was clicked
-$("#task-form-modal .btn-primary").click(function() {
+$("#task-form-modal .btn-save").click(function() {
   // get form values
   var taskText = $("#modalTaskDescription").val();
   var taskDate = $("#modalDueDate").val();
