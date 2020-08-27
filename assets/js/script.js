@@ -79,7 +79,7 @@ $(".list-group").on("click", "p", function() {
 });
 
 $(".list-group").on("blur", "textarea", function(){
-  // get the textares current value/text
+  // get the textareas current value/text
   var text = $(this)
     .val()
     .trim();
@@ -138,29 +138,20 @@ $(".list-group").on("click", "span", function() {
 //value of due date was changed
 $(".list-group").on("change", "input[type='text']", function() {
   //get current text
-  var date = $(this)
-    .val()
-    .trim();
+  var date = $(this).val();
   
   //get the parent ul's id attribute
-  var status = $(this)
-    .closest(".list-group")
-    .attr("id")
-    .replace("list-", "");
+  var status = $(this).closest(".list-group").attr("id").replace("list-", "");
 
   // get the task's position in the list of other li elements
-  var index = $(this)
-    .closest(".list-group-item")
-    .index();
+  var index = $(this).closest(".list-group-item").index();
 
   // update task in array and re-save to localStorage
   tasks[status][index].date = date;
   saveTasks();
 
   //recreate span elenemt with boostrap classes
-  var taskSpan = $("<span>")
-    .addClass("badge badge-primary badge-pill")
-    .text(date);
+  var taskSpan = $("<span>").addClass("badge badge-primary badge-pill").text(date);
 
   // replace input with span element
   $(this).replaceWith(taskSpan);
@@ -175,15 +166,21 @@ $(".card .list-group").sortable({
   tolerance: "pointer",
   helper: "clone",
   activate: function(event) {
+    $(this).addClass("dropover")
+    $(".bottom-trash").addClass("bottom-trash-drag")
     console.log("activate", this);
   },
   deactivate: function(event) {
+    $(this).removeClass("dropover")
+    $(".bottom-trash").removeClass("bottom-trash-drag")
     console.log("deactivate", this)
   },
   over: function(event) {
+    $(event.target).addClass("dropover-active")
     console.log("over", event.target);
   },
   out: function(event) {
+    $(event.target).removeClass("dropover-active")
     console.log("out", event.target);
   },
   update: function(event) {
@@ -226,12 +223,16 @@ $("#trash").droppable({
   accept: ".card .list-group-item",
   tolerance: "touch",
   drop: function(event, ui) {
+    $(".bottom-trash").removeClass("bottom-trash-drag")
+    console.log("drop");
     ui.draggable.remove();
   },
   over: function(event, ui) {
+    $(".bottom-trash").addClass("bottom-trash-drag")
     console.log("over");
   },
   out: function(event, ui) {
+    $(".bottom-trash").removeClass("bottom-trash-drag")
     console.log("out");
   }
 });
@@ -249,7 +250,7 @@ $("#task-form-modal").on("shown.bs.modal", function() {
 });
 
 // save button in modal was clicked
-$("#task-form-modal .btn-primary").click(function() {
+$("#task-form-modal .btn-save").click(function() {
   // get form values
   var taskText = $("#modalTaskDescription").val();
   var taskDate = $("#modalDueDate").val();
@@ -270,6 +271,13 @@ $("#task-form-modal .btn-primary").click(function() {
   }
 });
 
+setInterval(function () {
+  $(".card .list-group-item").each(function (el) {
+    auditTask(el);
+    console.log(taskEl);
+  });
+}, 1800000);
+
 // remove all tasks
 $("#remove-tasks").on("click", function() {
   for (var key in tasks) {
@@ -281,5 +289,4 @@ $("#remove-tasks").on("click", function() {
 
 // load tasks for the first time
 loadTasks();
-
 
